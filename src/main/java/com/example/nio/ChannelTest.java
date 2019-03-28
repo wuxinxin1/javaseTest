@@ -4,10 +4,14 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -166,5 +170,50 @@ public class ChannelTest {
         System.out.println(byteBuffer.position());
         System.out.println(byteBuffer.limit());
         System.out.println(byteBuffer.capacity());
+    }
+
+    /**
+     * 测试通信
+     */
+    @Test
+    public void client() throws IOException {
+        //创建网络类型通道
+        SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1",8866));
+        //创建缓冲区
+        ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+
+       //发送数据到服务端
+        for(int i=0;i<2;i++) {
+            byteBuffer.put(new String("hello").getBytes());
+            byteBuffer.flip();
+            socketChannel.write(byteBuffer);
+           // byteBuffer
+        }
+
+        //通知服务器，发送数据已经完毕，否则下面在调用读取操作将发送阻塞
+        socketChannel.shutdownOutput();
+        //关闭通道
+        socketChannel.close();
+    }
+
+    @Test
+    public void server() throws IOException {
+        //创建网络端服务类型的通道
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        //绑定端口号
+        serverSocketChannel.bind(new InetSocketAddress(8866));
+        SocketChannel socketChannel = serverSocketChannel.accept();
+        //创建缓冲区
+        ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+        //读取客户端数据
+        socketChannel.read(byteBuffer);
+        byteBuffer.flip();
+
+        socketChannel.shutdownInput();
+
+        //关闭通道
+        socketChannel.close();
+        serverSocketChannel.close();
+
     }
 }
