@@ -1,11 +1,8 @@
 package com.example.mapstruct;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * @author: wuxinxin
@@ -15,15 +12,8 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-public class Person {
-    private Long id;
+@AllArgsConstructor
+public class UserBaseInfo {
     private String name;
-    private String email;
-    private Date birthday;
-    private User user;
-}
-
-@Data
-class User{
-    private Integer age;
+    private String password;
 }

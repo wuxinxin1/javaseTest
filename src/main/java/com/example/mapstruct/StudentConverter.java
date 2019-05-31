@@ -5,8 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
- *  一个Mapping对应一个转换器类型
+ *  一个Mapping对应一个转换器类型;  一个对象转换为另外一个对象
  * @author: wuxinxin
  * @version: v1.0
  * @description: com.example.mapstruct
@@ -24,6 +26,7 @@ public interface StudentConverter {
 
     StudentDto student2StudentDto(Student student);
 
+    List<StudentDto> student2StudentDto(List<Student> student);
 
     @Mappings({
             @Mapping(source="name",target="name2")
