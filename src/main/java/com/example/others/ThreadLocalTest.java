@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.xml.bind.SchemaOutputResolver;
 
 /**
+ *对于ThreadLocal的研究
  * Created by Administrator on 2019/4/10/010.
  */
 public class ThreadLocalTest {
