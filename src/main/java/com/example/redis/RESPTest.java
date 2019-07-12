@@ -18,6 +18,7 @@ public class RESPTest {
 
         //获取resp协议数据,发送命令
         String resp = resp("set name1 wxxx");
+        System.out.println("reqBody="+resp);
 
         outputStream.write(resp.getBytes());
 
@@ -26,12 +27,14 @@ public class RESPTest {
         //读取返回结果
         InputStream inputStream = socket.getInputStream();
         byte[] buf=new byte[1024];
-        int len=0;
-        while ((len=inputStream.read(buf))!=-1){
-            System.out.println(new String(buf,0,len));
-        }
+        int len=inputStream.read(buf);
+
+        String respBody = new String(buf, 0, len);
+        System.out.println("respBody="+respBody);
+
         inputStream.close();
         outputStream.close();
+        socket.close();
     }
 
     /**
