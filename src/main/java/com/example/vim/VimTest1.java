@@ -25,18 +25,31 @@ public class VimTest1 {
          * 4.可视化 模式  块状选择，批量操作  v 选择单个字符   V 选择行  ctr+v选择块
          */
          //进行模式的说明
-         //aaa
-         //bbb
+         //aaa //bbb
 
         /**
-         * 删除
+         * insert模式 删除
          * 1.ctr+h  删除一个字符
          * 2.ctr+w  删除一个单词
          * 3.ctr+u  删除当前行
+         *
          */
-         //my name is wxx
+        //my name is wxx
         //我的名字是wxx
+        /**
+         * nomal模式删除
+         * 1.删除一个字符  x
+         * 2.删除一个单词 daw
+         * 3.删除一行
+         */
 
+        //aa bb cc
+        /**
+         * nomal模式查找
+         * 1./ 正向查找  ?反向 查找
+         * 2.n 下一个 N 上一个
+         */
+        //
         /**
          * nomal和insert模式方便切换
          * 1.转换nomal  ctr+[  直接切换为nomal模式
@@ -46,8 +59,13 @@ public class VimTest1 {
          */
         //模式的切换
         /**
-         * 上下左右移动 j 下 k 上 l 右 h 左
+         * 移动大法：
+         * 1.上下左右移动 j 下 k 上 l 右 h 左
+         * 2.行间搜索字符  f+搜索字符  “;”下一个  ","上一个;  找到最后一个就不匹配
+         * 3.移动到行首行尾  0行首 $ 行尾
+         * 4.翻页  ctrl+u  ctrl+f ctrl+o返回上一个位置 gg 文件头 GG 文件尾部
          */
-
+        //aa  bb ccc  dd
+        //aa  bb ccc  ddb
     }
 }
