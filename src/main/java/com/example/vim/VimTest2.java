@@ -20,4 +20,17 @@ public class VimTest2 {
     public void m2(){
         System.out.println("mm 2");
     }
+
+    /**
+     * 使用 buffer切换编辑多个缓冲区(buffer)
+     * 1. :ls 列举当前缓冲区
+     * 2. :b n 切换缓冲区 tab键补全
+     *
+     * 分屏查看多个buffer区(window)
+     * 1. vs
+     * 2.sp
+     * 3.ctr+w+w 切换
+     */
+
+
 }
