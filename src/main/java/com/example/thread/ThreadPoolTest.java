@@ -20,7 +20,9 @@ public class ThreadPoolTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        for(int i=0;i<10;i++) {
+        //ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for(int i=0;i<10000;i++) {
             executorService.execute(new H(i));
         }
 
