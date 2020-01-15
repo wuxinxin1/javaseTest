@@ -26,6 +26,19 @@
     </dependency>
 
     <dependency>
+      <groupId>org.apache.rocketmq</groupId>
+      <artifactId>rocketmq-client</artifactId>
+      <version>4.3.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-namesrv -->
+    <dependency>
+      <groupId>org.apache.rocketmq</groupId>
+      <artifactId>rocketmq-namesrv</artifactId>
+      <version>4.3.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
       <version>3.0.1</version>

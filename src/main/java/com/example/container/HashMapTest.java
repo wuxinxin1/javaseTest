@@ -1,7 +1,6 @@
 package com.example.container;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class HashMapTest {
 
@@ -10,7 +9,7 @@ public class HashMapTest {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 100000; i++) {
+                for (int i = 0; i < 100; i++) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {

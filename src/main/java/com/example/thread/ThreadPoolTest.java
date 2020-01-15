@@ -2,9 +2,7 @@ package com.example.thread;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 public class ThreadPoolTest {
 
@@ -18,7 +16,11 @@ public class ThreadPoolTest {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        //ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+        ThreadPoolExecutor executorService = new ThreadPoolExecutor(1, 5,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
 
         //ExecutorService executorService = Executors.newCachedThreadPool();
 
