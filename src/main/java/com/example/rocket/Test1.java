@@ -25,7 +25,10 @@ import java.util.List;
         synSend();
         //synSend2();
         //receive1();
-        receive2();
+        //receive2();
+
+        //测试消费速度
+        receive3();
 
     }
 
@@ -42,7 +45,7 @@ import java.util.List;
         producer.setNamesrvAddr("39.106.33.130:9876");
 
         producer.start();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             //Create a message instance, specifying topic, tag and message body.
             Message msg = new Message("TopicTest",
                     "TagA" ,
@@ -67,7 +70,7 @@ import java.util.List;
         producer.setNamesrvAddr("39.106.33.130:9876");
 
         producer.start();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             //Create a message instance, specifying topic, tag and message body.
             Message msg = new Message("TopicTest",
                     "TagA" ,
@@ -138,6 +141,47 @@ import java.util.List;
             public ConsumeOrderlyStatus consumeMessage(List<MessageExt> msgs, ConsumeOrderlyContext context) {
                 System.out.println(msgs.get(0));
                 return ConsumeOrderlyStatus.SUCCESS;
+            }
+        });
+
+        consumer.start();
+    }
+
+
+    /**
+     * 接收消息--如何增加消费的速度
+     * 1.一个实例修改线程数量，增加一个组消费实例
+     * 2.设置每次获取消息的最大个数，默认是1
+     * 3.直接不处理消息，计算当前堆积大于某个阈值的时候
+     */
+    public static void receive3() throws Exception{
+
+        final Long start=System.currentTimeMillis();
+
+        DefaultMQPushConsumer consumer = new
+                DefaultMQPushConsumer("please_rename_unique_group_name");
+
+        consumer.setNamesrvAddr("39.106.33.130:9876");
+
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+
+        consumer.setMessageModel(MessageModel.CLUSTERING);
+
+        //consumer.setConsumeThreadMin(1);
+        //consumer.setConsumeThreadMax(1);
+
+        //consumer.setConsumeMessageBatchMaxSize(1000);
+
+        consumer.subscribe("TopicTest","*");
+
+        consumer.registerMessageListener(new MessageListenerConcurrently(){
+
+            @Override
+            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+                //每条消息会携带详细和队列相关信息，可以计算还剩下多少条未处理，设置一个阈值就行丢弃处理
+                MessageExt messageExt = list.get(0);
+                System.out.println("收到消息"+list.size()+list+"耗时:"+(System.currentTimeMillis()-start));
+                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
 
