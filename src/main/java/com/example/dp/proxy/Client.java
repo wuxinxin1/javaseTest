@@ -65,6 +65,7 @@ public class Client {
 
         Subject proxyInstance=DynamicProxy.newProxyInstance(realSubject.getClass().getClassLoader(), realSubject.getClass().getInterfaces(), invocationHandler);
         proxyInstance.request();
+        System.out.println(proxyInstance.getClass());
     }
 
 }

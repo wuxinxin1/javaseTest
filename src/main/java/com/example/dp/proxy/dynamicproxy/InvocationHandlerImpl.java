@@ -25,7 +25,6 @@ public class InvocationHandlerImpl implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //连接点放入通知
         new BeforeAdvice().before();
-
         method.invoke(this.object,args);
         return proxy;
     }
