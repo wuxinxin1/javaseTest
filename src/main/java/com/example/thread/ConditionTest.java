@@ -40,8 +40,20 @@ class Producter implements Runnable{
         this.supermarket = supermarket;
     }
 
-    @Override
+   /* @Override
     public void run() {
+        for(int i=0;i<100;i++){
+            try {
+                supermarket.p(new Product(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
+
+     @Override
+    public void run() {
+
         for(int i=0;i<100;i++){
             try {
                 supermarket.p(new Product(i));
@@ -88,7 +100,8 @@ class Product{
     }
 }
 
-/*class Supermarket{
+
+class Supermarket{
 
     private Lock lock=new ReentrantLock();
 
@@ -100,14 +113,14 @@ class Product{
 
     public void p(Product product) throws Exception{
         lock.lock();
-        ////唤醒condition上其他线程
-        condition.signal();
 
         if(productList.size()<maxSize){
             productList.add(product);
             System.out.println("product:"+product);
 
         }else {
+            //唤醒condition上其他线程
+            condition.signal();
             //productList达到上限，释放锁,阻塞当前线程
             condition.await();
         }
@@ -118,14 +131,13 @@ class Product{
     public void c() throws Exception{
         lock.lock();
 
-        //唤醒condition上其他线程
-        condition.signal();
-
         if(productList.size()>0){
             Product product = productList.get(productList.size() - 1);
             productList.remove(product);
             System.out.println("consum:--------"+product);
         }else{
+            //唤醒condition上其他线程
+            condition.signal();
             //productList没有可消费元素，释放锁,阻塞当前线程
             condition.await();
         }
@@ -133,10 +145,58 @@ class Product{
         lock.unlock();
     }
 
-}*/
+}
 
-
+/*
 class Supermarket{
+
+    private Lock lock=new ReentrantLock();
+
+    private Condition condition=lock.newCondition();
+
+    private volatile List<Product> productList=new ArrayList<>(10);
+
+    private static  int maxSize=10;
+
+    public void p(Product product) throws Exception{
+        lock.lock();
+
+        if(productList.size()<maxSize){
+            productList.add(product);
+            System.out.println("product:"+product);
+
+        }else {
+            //唤醒condition上其他线程
+            condition.signal();
+            //productList达到上限，释放锁,阻塞当前线程
+            condition.await();
+        }
+
+        lock.unlock();
+    }
+
+    public void c() throws Exception{
+        lock.lock();
+
+        if(productList.size()>0){
+            Product product = productList.get(productList.size() - 1);
+            productList.remove(product);
+            System.out.println("consum:--------"+product);
+        }else{
+            //唤醒condition上其他线程
+            condition.signal();
+            //productList没有可消费元素，释放锁,阻塞当前线程
+            condition.await();
+        }
+
+        lock.unlock();
+    }
+
+}
+*/
+
+
+/*class Supermarket{
 
     private volatile List<Product> productList=new ArrayList<>(10);
 
@@ -173,4 +233,4 @@ class Supermarket{
         }
     }
 
-}
+}*/

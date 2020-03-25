@@ -22,7 +22,7 @@ import java.util.List;
  class Test1{
     public static void main(String[] args) throws Exception {
 
-        synSend();
+        //synSend();
         //synSend2();
         //receive1();
         //receive2();
@@ -42,10 +42,11 @@ import java.util.List;
         DefaultMQProducer producer = new
                 DefaultMQProducer("please_rename_unique_group_name");
 
-        producer.setNamesrvAddr("39.106.33.130:9876");
+        //producer.setNamesrvAddr("39.106.33.130:9876");
+        producer.setNamesrvAddr("localhost:9876");
 
         producer.start();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100; i++) {
             //Create a message instance, specifying topic, tag and message body.
             Message msg = new Message("TopicTest",
                     "TagA" ,
@@ -161,7 +162,7 @@ import java.util.List;
         DefaultMQPushConsumer consumer = new
                 DefaultMQPushConsumer("please_rename_unique_group_name");
 
-        consumer.setNamesrvAddr("39.106.33.130:9876");
+        consumer.setNamesrvAddr("localhost:9876");
 
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 

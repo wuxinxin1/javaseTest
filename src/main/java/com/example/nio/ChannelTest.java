@@ -45,14 +45,15 @@ public class ChannelTest {
 
         long start = System.currentTimeMillis();
 
-        FileInputStream fileInputStream=new FileInputStream("F:/java架构师视频/nio.zip");
-        FileOutputStream fileOutputStream=new FileOutputStream("F:/java架构师视频/nio3.zip");
+        FileInputStream fileInputStream=new FileInputStream("ioc上.png");
+        FileOutputStream fileOutputStream=new FileOutputStream("ioc1.png");
 
         //获取Channel
         FileChannel channel_1 = fileInputStream.getChannel();
         FileChannel channel_2 = fileOutputStream.getChannel();
 
-        ByteBuffer byteBuffer=ByteBuffer.allocate(1024*1024*1000);
+        ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+
         print(byteBuffer,"init");
         while (channel_1.read(byteBuffer)!=-1){//将数据读取到byteBuffer中
             print(byteBuffer,"write");
@@ -64,7 +65,6 @@ public class ChannelTest {
             byteBuffer.clear();
             print(byteBuffer,"clear");
         }
-
         channel_1.close();
         channel_2.close();
         fileInputStream.close();
@@ -86,7 +86,7 @@ public class ChannelTest {
 
         long start = System.currentTimeMillis();
 
-        FileChannel open = FileChannel.open(Paths.get("F:/","java架构师视频","nio.zip"), StandardOpenOption.READ);
+        FileChannel open = FileChannel.open(Paths.get("ioc下.png"), StandardOpenOption.READ);
         FileChannel open1 = FileChannel.open(Paths.get("F:/","java架构师视频","nio2.zip"), StandardOpenOption.WRITE,StandardOpenOption.READ,
                 StandardOpenOption.CREATE);
 
@@ -119,8 +119,8 @@ public class ChannelTest {
 
         long start = System.currentTimeMillis();
 
-        FileChannel open = FileChannel.open(Paths.get("F:/","java架构师视频","nio.zip"), StandardOpenOption.READ);
-        FileChannel open1 = FileChannel.open(Paths.get("F:/","java架构师视频","nio2.zip"), StandardOpenOption.WRITE,StandardOpenOption.READ,
+        FileChannel open = FileChannel.open(Paths.get("/Users/wuxinxin/Desktop/好文章/ioc下.png"), StandardOpenOption.READ);
+        FileChannel open1 = FileChannel.open(Paths.get("ioc下.png"), StandardOpenOption.WRITE,StandardOpenOption.READ,
                 StandardOpenOption.CREATE);
 
         //通道之间的复制
@@ -216,4 +216,23 @@ public class ChannelTest {
         serverSocketChannel.close();
 
     }
+
+
+    @Test
+    public void  uploadImg() throws IOException {
+
+        FileChannel fileChannel = FileChannel.open(Paths.get("/Users/wuxinxin/Desktop/好文章/ioc下.png"), StandardOpenOption.WRITE,StandardOpenOption.READ);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+
+        int i=0;
+
+        while ((i=fileChannel.write(byteBuffer))!=-1){
+            System.out.println(i);
+        }
+
+        fileChannel.close();
+
+    }
+
 }

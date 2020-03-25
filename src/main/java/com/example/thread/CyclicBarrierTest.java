@@ -11,86 +11,36 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class CyclicBarrierTest {
 
-    private static CyclicBarrier cyclicBarrier=new CyclicBarrier(2);
-
-    private static CyclicBarrier cyclicBarrier1=new CyclicBarrier(2,new A());
-
-    public static void main(String[] args) {
-        //test1();
-        test2();
-    }
-
-    static class A implements Runnable{
-
-        @Override
-        public void run() {
-            try {
-                System.out.println("执行优先任务开始");
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("3333");
-            System.out.println("执行优先任务结束");
-        }
-    }
-
-
-    public static void test2(){
-
-        new Thread(new Runnable() {
+    public static void main(String[] args) throws BrokenBarrierException, InterruptedException {
+        final CyclicBarrier cyclicBarrier = new CyclicBarrier(2, new Runnable() {
             @Override
             public void run() {
-                try {
-                    System.out.println("到达栅栏1");
-                    cyclicBarrier1.await();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println("1111");
+                System.out.println("hello");
             }
-        }).start();
+        });
 
-        try {
-            System.out.println("到达栅栏2");
-            cyclicBarrier1.await();
-            System.out.println("4444");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("2222");
-    }
+        //下面这样执行无效，主线程被堵住了
+        //cyclicBarrier.await();
 
-    public static void test1(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    System.out.println("1111");
-                    cyclicBarrier.await();
-                    System.out.println("2222");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (BrokenBarrierException e) {
-                    e.printStackTrace();
+        //cyclicBarrier.await();
+
+
+
+        for (int i = 0; i < 1; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        cyclicBarrier.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("aa");
                 }
-            }
-        }).start();
-
-        try {
-            System.out.println("3333");
-            cyclicBarrier.await();
-            System.out.println("4444");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (BrokenBarrierException e) {
-            e.printStackTrace();
+            }).start();
         }
-
-
-        System.out.println("fish");
+        cyclicBarrier.await();
     }
-
 }
