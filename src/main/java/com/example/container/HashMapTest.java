@@ -2,30 +2,31 @@ package com.example.container;
 
 import java.util.*;
 
+
+/**
+ * HashMap测试
+ *
+ * @author wuxinxin
+ */
 public class HashMapTest {
 
     public static void main(String[] args) throws Exception{
-        final HashMap<String, String> stringStringHashMap = new HashMap<>(2);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100; i++) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = UUID.randomUUID().toString();
-                            stringStringHashMap.put(s, "");
-                            System.out.println("put"+s);
-                        }
-                    },"wxx"+i).start();
-                }
+
+        HashMap<Integer, Object> objectObjectHashMap = new HashMap<>();
+
+        //1.hashMap第一次初始化的大小是16 threshold也就是阀值 16*0.75=12
+        //2.每个桶第一次put的时候赋值就好了,如果是这个桶已经有值了，那么判断是进行树插入还是链表插入
+        for(int i=1;i<100;i++){
+            //测试hash分布不均匀的情况
+            if(i%2==0) {
+                objectObjectHashMap.put(i, i);
             }
-        });
+        }
 
-        thread.start();
+        //计算hash
+        //System.out.println(new Integer(1).hashCode());
 
-        thread.join();
-        System.out.println("执行完成");
+        System.out.println(objectObjectHashMap.get("a"));
     }
 
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.rocket;
 
 
@@ -16,9 +17,11 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
 
 import java.util.List;
 
+*/
 /**
  * 队列的生产者和消费者
- */
+ *//*
+
  class Test1{
     public static void main(String[] args) throws Exception {
 
@@ -34,10 +37,12 @@ import java.util.List;
 
     //消息发送的三种发送方式
 
-    /**
+    */
+/**
      * 同步发送
      * @throws Exception
-     */
+     *//*
+
     public static void synSend() throws Exception{
         DefaultMQProducer producer = new
                 DefaultMQProducer("please_rename_unique_group_name");
@@ -60,10 +65,12 @@ import java.util.List;
         producer.shutdown();
     }
 
-    /**
+    */
+/**
      * 选择发送的队列
      * @throws Exception
-     */
+     *//*
+
     public static void synSend2() throws Exception{
         DefaultMQProducer producer = new
                 DefaultMQProducer("please_rename_unique_group_name");
@@ -91,11 +98,13 @@ import java.util.List;
         producer.shutdown();
     }
 
-    /**
+    */
+/**
      * 接收消息
      * 1.DefaultMQPushConsumer
      * 2.
-     */
+     *//*
+
     public static void receive1() throws Exception{
         DefaultMQPushConsumer consumer = new
                 DefaultMQPushConsumer("please_rename_unique_group_name");
@@ -149,12 +158,14 @@ import java.util.List;
     }
 
 
-    /**
+    */
+/**
      * 接收消息--如何增加消费的速度
      * 1.一个实例修改线程数量，增加一个组消费实例
      * 2.设置每次获取消息的最大个数，默认是1
      * 3.直接不处理消息，计算当前堆积大于某个阈值的时候
-     */
+     *//*
+
     public static void receive3() throws Exception{
 
         final Long start=System.currentTimeMillis();
@@ -190,3 +201,4 @@ import java.util.List;
     }
 
 }
+*/
