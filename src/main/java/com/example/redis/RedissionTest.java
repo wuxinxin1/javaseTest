@@ -21,7 +21,6 @@ public class RedissionTest {
        //config.setTransportMode(TransportMode.EPOLL);
 
        config.useSingleServer().setAddress("redis://127.0.0.1:6379");
-
         redisson = Redisson.create(config);
    }
 
