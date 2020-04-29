@@ -1,7 +1,10 @@
 package com.example.thread;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,10 +19,11 @@ public class ConditionTest {
 
     public static void main(String[] args) {
         Supermarket supermarket = new Supermarket();
+        Test3 test3 = new Test3();
 
-        Producter producter = new Producter(supermarket);
+        Producter producter = new Producter(test3);
 
-        Consumer consumer = new Consumer(supermarket);
+        Consumer consumer = new Consumer(test3);
 
         Thread thread1 = new Thread(producter);
 
@@ -28,19 +32,53 @@ public class ConditionTest {
 
         thread1.start();
         thread2.start();
+
+        /*BigDecimal bigDecimal = test2(new BigDecimal(100), 1);
+
+        System.out.println(bigDecimal);*/
+
+        //System.out.println(test1("abbcc"));
+
+    }
+
+    public static Map test1(String s){
+        if(s==null && s.length()==0){
+            throw new IllegalArgumentException();
+        }
+
+        s=s.toLowerCase();
+        Map<Character,Integer> map=new HashMap();
+        for(int i=0;i<s.length();i++){
+            char c=s.charAt(i);
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        return map;
+
+    }
+
+    public static BigDecimal test2(BigDecimal amount, int count){
+        if (amount==null || amount.compareTo(BigDecimal.ZERO)<=0 || count<1){
+            throw new IllegalArgumentException();
+        }
+        return amount.divide(new BigDecimal(count),2, BigDecimal.ROUND_HALF_UP);
     }
 
 }
 
 class Producter implements Runnable{
 
-    private Supermarket supermarket;
+    /*private Supermarket supermarket;
 
     public Producter(Supermarket supermarket) {
         this.supermarket = supermarket;
+    }*/
+    private Test3 test3;
+
+    public Producter(Test3 test3) {
+        this.test3 = test3;
     }
 
-   /* @Override
+    /* @Override
     public void run() {
         for(int i=0;i<100;i++){
             try {
@@ -56,7 +94,7 @@ class Producter implements Runnable{
 
         for(int i=0;i<100;i++){
             try {
-                supermarket.p(new Product(i));
+                test3.p();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,17 +104,23 @@ class Producter implements Runnable{
 
 class Consumer implements Runnable{
 
-    private Supermarket supermarket;
+   /* private Supermarket supermarket;
 
     public Consumer(Supermarket supermarket) {
         this.supermarket = supermarket;
+    }*/
+
+    private Test3 test3;
+
+    public Consumer(Test3 test3) {
+        this.test3 = test3;
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                supermarket.c();
+                test3.c();
             } catch (Exception e) {
 
             }
@@ -234,3 +278,46 @@ class Supermarket{
     }
 
 }*/
+
+class Test3{
+
+    private Lock lock=new ReentrantLock();
+
+    private Condition condition=lock.newCondition();
+
+    //private volatile boolean flag=true;
+    private  boolean flag=true;
+    //private volatile Integer a=0;
+    private  Integer a=0;
+
+    public void p() throws InterruptedException {
+
+        lock.lock();
+
+        if(flag){
+            a++;
+            flag=false;
+            System.out.println(a);
+        }else{
+            condition.signal();
+            condition.await();
+        }
+
+        lock.unlock();
+    }
+
+    public void c() throws InterruptedException {
+        lock.lock();
+
+        if(!flag){
+            a++;
+            flag=true;
+            System.out.println(a);
+        }else{
+            condition.signal();
+            condition.await();
+        }
+
+        lock.unlock();
+    }
+}

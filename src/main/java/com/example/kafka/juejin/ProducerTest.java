@@ -43,31 +43,49 @@ public class ProducerTest {
 
         //配置序列化器
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CompanySerializer.class.getName());
+        //properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
         //采用自定义的分区器
-        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,DemoPartiotioner.class.getName());
+        //properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,DemoPartiotioner.class.getName());
 
         //配置自定义的拦截器
-        properties.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,DemoProducerInterceptor.class.getName()+","+DemoProducerInterceptor2.class.getName());
+        //properties.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,DemoProducerInterceptor.class.getName()+","+DemoProducerInterceptor2.class.getName());
 
         properties.put("bootstrap.servers", brokerList);
 
+        //测试普通字符串消息
+         /*KafkaProducer<String, String> producer =
+                new KafkaProducer<>(properties);
+        ProducerRecord<String, String> record =
+                new ProducerRecord<>(topic, "hello, Kafka!");*/
 
-        KafkaProducer<String, String> producer =
+         //测试自定义对象消息
+        KafkaProducer<String, Company> producer =
                 new KafkaProducer<>(properties);
 
-        ProducerRecord<String, String> record =
-                new ProducerRecord<>(topic, "hello, Kafka!");
+        Company wxx = new Company("wxx", "18");
+        ProducerRecord<String, Company> record =
+                new ProducerRecord<>(topic, wxx);
 
         //同步调用
-        sync(producer,record);
+        sync1(producer,record);
         //异步调用
         //async(producer,record);
 
         producer.close();
     }
 
+    //同步调用--发送指定对象
+    public static void  sync1(KafkaProducer<String, Company> producer,ProducerRecord<String, Company> record) throws ExecutionException, InterruptedException {
+        for(int i=0;i<5;i++) {
+            RecordMetadata recordMetadata = producer.send(record).get();
+            //可以获取发送后的元数据
+            //主题-分区@下标
+            System.out.println(recordMetadata);
+        }
+
+    }
 
     //同步调用
     public static void  sync(KafkaProducer<String, String> producer,ProducerRecord<String, String> record) throws ExecutionException, InterruptedException {
